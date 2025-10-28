@@ -1,2 +1,15 @@
 # automation-petstore-poc
-Automation framework Java, RestAssured, TestNG
+
+automation-petstore-poc - is an example of automation framework for API testing using Java, Maven, TestNG, RestAssured
+
+## Pre requisites
+
+- installed JDK 17
+- installed maven
+- 
+
+## Run tests
+Open bash cmd and run command
+```bash
+mvn clean test && start target\ExtentReport.html
+```
