@@ -2,6 +2,7 @@ package service;
 
 import core.BaseApiService;
 import dto.OrderDto;
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
 
@@ -12,9 +13,7 @@ public class StoreApiService extends BaseApiService {
     private static final String ORDER_URL = "/store/order";
     private static final String ORDER_BY_ID_URL = ORDER_URL + "/{orderId}";
 
-    /**
-     * @return Returns a map of status codes to quantities
-     */
+    @Step("Send GET request to " + INVENTORY_URL)
     public Response getInventory() {
         return given()
                 .when()
@@ -23,11 +22,7 @@ public class StoreApiService extends BaseApiService {
                 .extract().response();
     }
 
-    /**
-     *
-     * @param requestDto
-     * @return order placed for purchasing the pet
-     */
+    @Step("Send POST request to " + ORDER_URL)
     public Response postOrder(OrderDto requestDto) {
         return given()
                 .body(requestDto)
@@ -37,6 +32,7 @@ public class StoreApiService extends BaseApiService {
                 .extract().response();
     }
 
+    @Step("Send GET request to " + ORDER_BY_ID_URL)
     public Response getOrder(String id) {
         return given()
                 .pathParam("orderId", id)
@@ -46,6 +42,7 @@ public class StoreApiService extends BaseApiService {
                 .extract().response();
     }
 
+    @Step("Send DELETE request to " + ORDER_BY_ID_URL)
     public Response deleteOrder(String id) {
         return given()
                 .pathParam("orderId", id)

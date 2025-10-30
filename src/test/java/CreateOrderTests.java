@@ -1,11 +1,11 @@
 import dto.OrderDto;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import report.TestName;
 import service.StoreApiService;
 
 import java.math.BigInteger;
@@ -23,7 +23,7 @@ public class CreateOrderTests extends BaseTest {
     }
 
     @Test
-    @TestName("POST - Place an order for a pet")
+    @Description("POST - Place an order for a pet")
     public void createOrderTest() {
         OrderDto requestDto = getRequestDto();
         Response actualResponse = storeApiService.postOrder(requestDto);
@@ -45,8 +45,7 @@ public class CreateOrderTests extends BaseTest {
                 .build();
     }
 
-    @Test(dataProvider = "invalidOrderDtoList")
-    @TestName("POST - place order with invalid payload")
+    @Test(testName = "POST - place order with invalid payload {0}", dataProvider = "invalidOrderDtoList")
     public void createOrderExceptionalTest(OrderDto invalidDto) {
         Response actualResponse = storeApiService.postOrder(invalidDto);
         actualResponse.then().statusCode(HttpStatus.SC_BAD_REQUEST);

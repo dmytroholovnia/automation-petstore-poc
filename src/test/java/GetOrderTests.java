@@ -4,7 +4,6 @@ import org.hamcrest.Matchers;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import report.TestName;
 import service.StoreApiService;
 
 import java.util.Random;
@@ -20,24 +19,21 @@ public class GetOrderTests extends BaseTest {
         storeApiService = new StoreApiService();
     }
 
-    @Test
-    @TestName("GET - order by id")
+    @Test(testName = "GET - order by id")
     public void getOrderTest() {
         String id = String.valueOf(getRandomValidOrderId());
         Response actualResponse = storeApiService.getOrder(id);
-        actualResponse.then().statusCode(HttpStatus.SC_OK);
+        ResponseValidator.validateStatusOk(actualResponse);
     }
 
     private int getRandomValidOrderId() {
         return new Random().nextInt(0, 10);
     }
 
-    @Test(dataProvider = "invalidOrderIds")
-    @TestName("GET - get order exceptional")
+    @Test(testName = "GET - get order exceptional", dataProvider = "invalidOrderIds")
     public void getOrderInvalidTest(String category, String orderId) {
         Response response = storeApiService.getOrder(orderId);
-        response.then()
-                .statusCode(Matchers.anyOf(is(HttpStatus.SC_BAD_REQUEST), is(HttpStatus.SC_NOT_FOUND)));
+        ResponseValidator.validateExceptionalResponse(response);
     }
 
     @DataProvider(name = "invalidOrderIds", parallel = true)

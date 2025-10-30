@@ -2,7 +2,6 @@ import io.restassured.response.Response;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import report.TestName;
 import service.StoreApiService;
 
 public class DeleteOrderTests {
@@ -14,22 +13,20 @@ public class DeleteOrderTests {
         storeApiService = new StoreApiService();
     }
 
-    @Test
-    @TestName("DELETE - order by id")
+    @Test(testName = "DELETE - order by id")
     public void deleteOrderTest() {
         Response response = storeApiService.deleteOrder(String.valueOf(10));
         ResponseValidator.validateStatusOk(response);
     }
 
-    @Test(dataProvider = "invalidOrderIdParams")
-    @TestName("GET - find order with invalid orderId")
+    @Test(testName = "GET - find order with invalid orderId", dataProvider = "invalidOrderIdParams")
     public void getOrderInvalidTest(String category, String orderId) {
         Response response = storeApiService.getOrder(orderId);
         ResponseValidator.validateExceptionalResponse(response);
     }
 
 
-    @DataProvider(name = "invalidOrderIdParams")
+    @DataProvider(name = "invalidOrderIdParams", parallel = true)
     public Object[][] invalidOrderIdParams() {
         return new Object[][]{
                 // Empty / Missing
