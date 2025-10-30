@@ -1,16 +1,42 @@
-# automation-petstore-poc
+Here’s a polished and more structured version of your README:
 
-automation-petstore-poc - is an example of automation framework for API testing using Java, Maven, TestNG, RestAssured <br />
+---
 
-Api documentation link - https://petstore.swagger.io/
+# Automation Petstore POC
 
-## Pre requisites
+This project is a sample automation framework for API testing using **Java**, **Maven**, **TestNG**, and **RestAssured**.
+It demonstrates API validation practices and generates reports using **Allure**.
 
-- installed JDK 17
-- installed maven
+📎 **API Reference:** [https://petstore.swagger.io/](https://petstore.swagger.io/)
+📝 Logging is triggered when tests fail.
+📊 Test execution results are available in an Allure report.
 
-## Run tests
-Open bash cmd and run command
+---
+
+## ✅ Prerequisites
+
+Ensure the following tools are installed on your machine:
+
+* **JDK 17**
+* **Maven**
+* **Allure Report** — installation guide: [https://allurereport.org/docs/install/](https://allurereport.org/docs/install/)
+
+---
+
+## 🚀 Running Tests
+
+### 1️⃣ Run automated tests
+
 ```bash
-mvn clean test && start target/ExtentReport.html
+mvn clean test
 ```
+
+### 2️⃣ Generate and view Allure report
+
+```bash
+allure serve target/allure-results
+```
+
+---
+
+Feel free to modify or extend this framework to suit your testing needs!
