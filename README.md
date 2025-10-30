@@ -7,8 +7,8 @@ Here’s a polished and more structured version of your README:
 This project is a sample automation framework for API testing using **Java**, **Maven**, **TestNG**, and **RestAssured**.
 It demonstrates API validation practices and generates reports using **Allure**.
 
-📎 **API Reference:** [https://petstore.swagger.io/](https://petstore.swagger.io/)
-📝 Logging is triggered when tests fail.
+📎 **API Reference:** [https://petstore.swagger.io/](https://petstore.swagger.io/) <br />
+📝 Logging is triggered when tests fail. <br />
 📊 Test execution results are available in an Allure report.
 
 ---
