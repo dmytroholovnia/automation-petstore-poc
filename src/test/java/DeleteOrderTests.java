@@ -2,11 +2,14 @@ import io.restassured.response.Response;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.Random;
+
 public class DeleteOrderTests extends BaseTest {
 
     @Test(testName = "DELETE - order by id")
     public void deleteOrderTest() {
-        Response response = storeApiService.deleteOrder(String.valueOf(10));
+        int orderId = new Random().nextInt(1, Integer.MAX_VALUE);
+        Response response = storeApiService.deleteOrder(String.valueOf(orderId));
         ResponseValidator.validateStatusOk(response);
     }
 
