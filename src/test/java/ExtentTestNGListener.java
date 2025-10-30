@@ -3,21 +3,24 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import org.testng.*;
 import report.TestName;
 
+import java.util.Date;
+
 public class ExtentTestNGListener implements ITestListener, ISuiteListener {
 
     private static ExtentReports extent;
-    private static final ThreadLocal<ExtentTest> testThread = new ThreadLocal<>();
+    private final ThreadLocal<ExtentTest> testThread = new ThreadLocal<>();
 
     @Override
     public void onStart(ISuite suite) {
-        // Initialize report once per suite
         ExtentSparkReporter spark = new ExtentSparkReporter("target/ExtentReport.html");
-        spark.config().setDocumentTitle("Automation Report");
-        spark.config().setReportName("Test Execution Results");
+        spark.config().setReportName("Test Execution Timeline");
+        spark.config().setDocumentTitle("Parallel Execution Report");
+        spark.config().setTimelineEnabled(true);
+        spark.config().setReportName("Automation run");
 
         extent = new ExtentReports();
         extent.attachReporter(spark);
-        extent.setSystemInfo("Tester", "Your Name");
+        extent.setSystemInfo("Parallel", "true");
     }
 
     @Override
@@ -27,33 +30,26 @@ public class ExtentTestNGListener implements ITestListener, ISuiteListener {
 
     @Override
     public void onTestStart(ITestResult result) {
-        String name = result.getMethod().getDescription(); // TestNG description
-        if (name == null || name.isEmpty()) {
-            TestName annotation = result.getMethod()
-                    .getConstructorOrMethod()
-                    .getMethod()
-                    .getAnnotation(TestName.class);
-            if (annotation != null) {
-                name = annotation.value();
-            } else {
-                name = result.getMethod().getMethodName();
+        synchronized (this) {
+            String testName = result.getMethod().getDescription();
+            if (testName == null || testName.isEmpty()) {
+                testName = result.getMethod().getMethodName();
             }
+            String threadInfo = "Thread-" + Thread.currentThread().getId();
+
+            ExtentTest test = extent.createTest(testName)
+                    .assignCategory(result.getTestClass().getRealClass().getSimpleName())
+                    .assignDevice(threadInfo);  // Show thread ID as “device” tag
+            testThread.set(test);
         }
-
-        ExtentTest test = extent.createTest(name)
-                .assignCategory(result.getTestClass().getName());
-        testThread.set(test);
     }
-
-//    @Override
-//    public void onTestStart(ITestResult result) {
-//        ExtentTest test = extent.createTest(result.getMethod().getMethodName());
-//        testThread.set(test);
-//    }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        testThread.get().pass("Test passed");
+        ExtentTest test = testThread.get();
+        test.getModel().setStartTime(new Date(result.getStartMillis()));
+        test.getModel().setEndTime(new Date(result.getEndMillis()));
+        test.pass("Test passed");
     }
 
     @Override
@@ -66,12 +62,5 @@ public class ExtentTestNGListener implements ITestListener, ISuiteListener {
         testThread.get().skip(result.getThrowable());
     }
 
-    @Override
-    public void onTestFailedButWithinSuccessPercentage(ITestResult result) { }
-
-    @Override
-    public void onTestFailedWithTimeout(ITestResult result) {
-        onTestFailure(result);
-    }
 }
 

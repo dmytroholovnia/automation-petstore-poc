@@ -1,0 +1,70 @@
+import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
+import org.hamcrest.Matchers;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import report.TestName;
+import service.StoreApiService;
+
+import java.util.Random;
+
+import static org.hamcrest.Matchers.is;
+
+public class GetOrderTests extends BaseTest {
+
+    private StoreApiService storeApiService;
+
+    @BeforeTest
+    public void setup() {
+        storeApiService = new StoreApiService();
+    }
+
+    @Test
+    @TestName("GET - order by id")
+    public void getOrderTest() {
+        String id = String.valueOf(getRandomValidOrderId());
+        Response actualResponse = storeApiService.getOrder(id);
+        actualResponse.then().statusCode(HttpStatus.SC_OK);
+    }
+
+    private int getRandomValidOrderId() {
+        return new Random().nextInt(0, 10);
+    }
+
+    @Test(dataProvider = "invalidOrderIds")
+    @TestName("GET - get order exceptional")
+    public void getOrderInvalidTest(String category, String orderId) {
+        Response response = storeApiService.getOrder(orderId);
+        response.then()
+                .statusCode(Matchers.anyOf(is(HttpStatus.SC_BAD_REQUEST), is(HttpStatus.SC_NOT_FOUND)));
+    }
+
+    @DataProvider(name = "invalidOrderIds", parallel = true)
+    public Object[][] invalidOrderIds() {
+        return new Object[][]{
+                // Empty / Missing
+                {"empty_or_missing", ""},
+                {"missing", "null"},
+
+                // Wrong type
+                {"wrong_type_string", "abc"},
+                {"wrong_type_boolean", "true"},
+                {"wrong_type_array", "\"[]\""},
+                {"wrong_type_float", "1.2"},
+
+                // Out of business range
+                {"below_range_zero", "0"},
+                {"above_range_11", "11"},
+                {"above_range_999", "999"},
+
+                // Negative values
+                {"negative_value_minus_1", "-1"},
+                {"negative_value_minus_100", "-100"},
+
+                // Overflow
+                {"overflow_big_number", "9223372036854775808"}
+        };
+    }
+
+}
