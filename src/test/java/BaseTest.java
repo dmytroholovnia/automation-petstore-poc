@@ -1,6 +1,12 @@
-import org.testng.annotations.Listeners;
+import org.testng.annotations.BeforeTest;
+import service.StoreApiService;
 
-@Listeners(ExtentTestNGListener.class)
 abstract class BaseTest {
+    protected StoreApiService storeApiService;
+
+    @BeforeTest
+    public void setup() {
+        storeApiService = new StoreApiService();
+    }
 
 }

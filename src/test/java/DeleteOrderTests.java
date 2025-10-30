@@ -1,17 +1,8 @@
 import io.restassured.response.Response;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import service.StoreApiService;
 
-public class DeleteOrderTests {
-
-    private StoreApiService storeApiService;
-
-    @BeforeTest
-    public void setup() {
-        storeApiService = new StoreApiService();
-    }
+public class DeleteOrderTests extends BaseTest {
 
     @Test(testName = "DELETE - order by id")
     public void deleteOrderTest() {

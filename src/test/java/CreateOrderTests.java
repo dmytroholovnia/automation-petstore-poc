@@ -15,13 +15,6 @@ import java.util.stream.Stream;
 
 public class CreateOrderTests extends BaseTest {
 
-    private StoreApiService storeApiService;
-
-    @BeforeTest
-    public void setup() {
-        storeApiService = new StoreApiService();
-    }
-
     @Test
     @Description("POST - Place an order for a pet")
     public void createOrderTest() {

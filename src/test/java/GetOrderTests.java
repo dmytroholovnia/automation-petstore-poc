@@ -1,23 +1,10 @@
 import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
-import org.hamcrest.Matchers;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import service.StoreApiService;
 
 import java.util.Random;
 
-import static org.hamcrest.Matchers.is;
-
 public class GetOrderTests extends BaseTest {
-
-    private StoreApiService storeApiService;
-
-    @BeforeTest
-    public void setup() {
-        storeApiService = new StoreApiService();
-    }
 
     @Test(testName = "GET - order by id")
     public void getOrderTest() {
