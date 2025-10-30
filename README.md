@@ -1,7 +1,3 @@
-Here’s a polished and more structured version of your README:
-
----
-
 # Automation Petstore POC
 
 This project is a sample automation framework for API testing using **Java**, **Maven**, **TestNG**, and **RestAssured**.
@@ -36,7 +32,3 @@ mvn clean test
 ```bash
 allure serve target/allure-results
 ```
-
----
-
-Feel free to modify or extend this framework to suit your testing needs!
